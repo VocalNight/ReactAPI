@@ -5,6 +5,8 @@ import './App.css';
 
 function MainPage() {
     const [games, setGames] = useState([]);
+    const [error, setError] = useState(null);
+    const [pending, setPending] = useState(true);
 
     useEffect(() => {
         fetch('https://localhost:7075/api/GameModels')
@@ -12,9 +14,16 @@ function MainPage() {
                 if (response.ok) {
                     return response.json();
                 }
+                throw Error('could not fetch data. Check your connection!');
             })
             .then(data => {
+                setPending(false);
+                setError(null);
                 setGames(data);
+            })
+            .catch(err => {
+                setError(err.message);
+                setPending(false);
             });
     }, [])
 
@@ -35,8 +44,14 @@ function MainPage() {
     }
 
     return (
+        <div className="App-header text"> 
+
+        {error && <div>{error}</div>}
+        {pending && <div>Now loading...</div>}
+
+        {games.length != 0 &&
         <div className="App">
-            <header className="App-header">
+            <header >
                 <div className='text'>
                     Game Finder
                 </div>
@@ -46,6 +61,8 @@ function MainPage() {
                     </ul>
                 </div>
             </header>
+        </div>
+        }
         </div>
     );
 }
