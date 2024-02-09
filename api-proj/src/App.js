@@ -1,52 +1,18 @@
-import { useEffect, useState } from "react";
-import { Game } from "./Model/Game";
-import './App.css';
+import React from "react"
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom"
 
-function App() {
-  const [games, setGames] = useState([]);
+import MainPage from "./MainPage"
+import GamePage from "./GamePage"
 
-  useEffect(() => {
-    fetch('https://localhost:7075/api/GameModels')
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      }
-    })
-    .then(data => {
-      setGames(data);
-    });
-  }, [])
-
-  const populateList = () => {
-    let gameList = [];
-
-  for (let game of games) {
-    console.log(games)
-    gameList.push(<li onClick={() => console.log('hi')} key={game.id}>{game.name}</li>)
-  }
-
-  return(
-    <>
-    {gameList}
-    </>
-  );
-  }
-
-
+export default function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <div className='text'>
-          Game Finder
-        </div>
-        <div className='gameList'>
-          <ul>
-          {populateList()}
-          </ul>
-        </div>
-      </header>
-    </div>
-  );
+<>
+    <Router>
+      <Routes>
+        <Route path="/" element={<MainPage />}></Route>
+        <Route path="/GameModel/:id" element={<GamePage />} />
+      </Routes>
+    </Router>  
+</>
+  )
 }
-
-export default App;
