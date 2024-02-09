@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from 'react-router-dom';
 
-import './App.css';
+import '../App.js';
 
 function MainPage() {
     const [games, setGames] = useState([]);
